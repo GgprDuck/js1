@@ -11,8 +11,8 @@ router.get("/posts", async (req, res) => {
 
 
 function generateTocken() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const text = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for (var i = 0; i < 10; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
@@ -20,7 +20,7 @@ function generateTocken() {
 }
 
 router.post("/sign-up", async (req,res) =>{
-    let user = new User({
+    const user = new User({
         login:req.query.login,
         password: req.query.password,
         tocken: "",
@@ -32,7 +32,7 @@ router.post("/sign-up", async (req,res) =>{
 
 
 router.post("/sign-in",async function(req,res){
-    let tocken = generateTocken();
+    const tocken = generateTocken();
     const user = await User.findOne({ login: req.query.login , password: req.query.password });
     if (user) {
         user.tocken = tocken;
@@ -43,7 +43,7 @@ router.post("/sign-in",async function(req,res){
 });
 
  router.post("/logout",isAuthorized, async(req,res) =>{
-    let head = req.headers['authorization'];
+    const head = req.headers['authorization'];
     try {
 		const post = await User.findOne({ tocken: head });
 		if (post) {

@@ -1,5 +1,4 @@
-console.log("GG");
-console.log("Now i full master");
-let users = [];
+
+const users = [];
 
 module.exports = users;

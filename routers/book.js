@@ -6,8 +6,8 @@ const Book = require("./../models/modelBook.js");
 const { populate, update } = require('./../models/User.js');
 const User = require('./../models/User.js');
 const Category = require('./../models/category.js')
-let count = 0;
-let num = 0;
+
+
 
 router.use(isAuthorized);
 
@@ -39,9 +39,11 @@ router.get("/", async function (req, res) {
 
 
 router.post("/", async (req, res) => {
-    let user = await User.findOne({ id: req.query.authorId });
+    let num = 0;
+    let count = 0;
+    const user = await User.findOne({ id: req.query.authorId });
     if (user) {
-        let book = new Book({
+        const book = new Book({
             title: req.query.title,
             authorId: req.query.authorId,
             rate: req.query.rate,
@@ -52,7 +54,6 @@ router.post("/", async (req, res) => {
             num = element.rate + num;
             count++;
             num = num / count;
-            return num;
         });
         user.averageRating = num;
         await user.save();
@@ -64,9 +65,9 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/:id/comments", async (req, res) => {
-    let book = await Book.findOne({ _id: req.params.id });
-    let head = req.headers['authorization'];
-    let user = await User.findOne({ tocken: head });
+    const book = await Book.findOne({ _id: req.params.id });
+    const head = req.headers['authorization'];
+    const user = await User.findOne({ tocken: head });
     if (!user) {
         return res.status(404).send("User not found");
     }
@@ -80,17 +81,15 @@ router.post("/:id/comments", async (req, res) => {
         book._id,
         user.id,
     );
-    console.log(message);
     book.coments[book.coments.length] = message;
     await book.save();
     return res.status(200).send(message); 
 });
 
 router.get("/:id/comments", async(req,res) =>{
-    let book = await Book.findOne({ _id: req.params.id });
+    const book = await Book.findOne({ _id: req.params.id });
     let comment = [];
     book.coments.forEach((el,i)=>{
-        console.log(el);
         comment[i] = el; 
         return comment;
     });
@@ -98,15 +97,15 @@ router.get("/:id/comments", async(req,res) =>{
 });
 
 router.post("/category" , async(req,res)=>{
-    let category = new Category({
+    const category = new Category({
         category: req.query.category,
     });
     await category.save();
-    res.status(200).send(category);
+    res.status(201).send(category);
 });
 
 router.get("/category", async(req,res) =>{
-    let category = await Category.find();
+    const category = await Category.find();
     console.log(category);
     res.status(200).send(category);
 });
