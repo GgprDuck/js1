@@ -5,6 +5,7 @@ const isAuthorized = require('./../middleware/isAuthorized.js');
 const Book = require("./../models/modelBook.js");
 const { populate, update } = require('./../models/User.js');
 const User = require('./../models/User.js');
+const Category = require('./../models/category.js')
 let count = 0;
 let num = 0;
 
@@ -13,8 +14,6 @@ router.use(isAuthorized);
 class Message{
     constructor(date,comment,id,author) {
         this.date = date;
-        //this.minute = minute;
-        //this.hour = hour;
         this.comment = comment;
         this.id = id;
         this.author = author;
@@ -95,8 +94,21 @@ router.get("/:id/comments", async(req,res) =>{
         comment[i] = el; 
         return comment;
     });
-    console.log(comment);
     res.status(200).send(comment);
+});
+
+router.post("/category" , async(req,res)=>{
+    let category = new Category({
+        category: req.query.category,
+    });
+    await category.save();
+    res.status(200).send(category);
+});
+
+router.get("/category", async(req,res) =>{
+    let category = await Category.find();
+    console.log(category);
+    res.status(200).send(category);
 });
 
 module.exports = router;

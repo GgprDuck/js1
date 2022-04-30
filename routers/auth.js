@@ -20,7 +20,6 @@ function generateTocken() {
 }
 
 router.post("/sign-up", async (req,res) =>{
-
     let user = new User({
         login:req.query.login,
         password: req.query.password,
@@ -28,7 +27,6 @@ router.post("/sign-up", async (req,res) =>{
         averageRating: "",
     });
     await user.save();
-    console.log(user);
     res.status(201).send(user);
 });
 
